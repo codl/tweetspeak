@@ -74,4 +74,4 @@ if __name__ == "__main__":
         print("set your env vars!!!")
         exit(1)
 
-    app.run(host="10.7.0.1")
+    app.run(host=getenv("TWEETSPEAK_HOST","127.0.0.1"), port=getenv("TWEETSPEAK_PORT", "5000"))
