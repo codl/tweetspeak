@@ -1,7 +1,7 @@
 from flask import Flask, request, send_file, make_response
 from os import getenv
 from twilio import twiml
-import tweepy
+import twitter
 import time
 import random
 import string
@@ -39,32 +39,31 @@ def get_tweet():
     global tweets, tweets_timestamp
     now = time.time()
     if(now - tweets_timestamp > 300):
-        tweets = twitter.user_timeline("codl", count=500)
+        uid = tw.account.verify_credentials()['id']
+        tweets = tw.statuses.user_timeline(user_id=uid, count=200, include_rts=False)
         # filter out replies
-        tweets = filter(lambda t: not t.in_reply_to_status_id, tweets)
+        tweets = filter(lambda t: not t['in_reply_to_status_id'], tweets)
         # filter out media
-        tweets = filter(lambda t: not hasattr(t, "media"), tweets)
+        tweets = filter(lambda t: not "media" in t, tweets)
         # filter out links
-        tweets = filter(lambda t: not "https://t.co" in t.text, tweets)
+        tweets = filter(lambda t: not "https://t.co" in t['text'], tweets)
         # filter out tweets with no alphanum characters
         tweets = filter(lambda t:
-            any((char in t.text for char in string.ascii_letters + string.digits))
+            any((char in t['text'] for char in string.ascii_letters + string.digits))
         , tweets)
         tweets = list(tweets)
-        tweets.sort(key=lambda t: t.favorite_count, reverse=True)
+        tweets.sort(key=lambda t: t['favorite_count'], reverse=True)
         tweets = tweets[:40]
         tweets_timestamp = now
     tweet = random.choice(tweets)
-    return tweet.text
+    return tweet['text']
 
-twitter = None
+tw = None
 
 def setup_twitter():
-    auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
-    auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
-
-    global twitter
-    twitter = tweepy.API(auth)
+    global tw
+    tw = twitter.Twitter(auth=twitter.OAuth(
+        ACCESS_TOKEN, ACCESS_SECRET, API_KEY, API_SECRET))
 
 
 app.before_first_request(setup_twitter)
@@ -74,4 +73,4 @@ if __name__ == "__main__":
         print("set your env vars!!!")
         exit(1)
 
-    app.run(host=getenv("TWEETSPEAK_HOST","127.0.0.1"), port=getenv("TWEETSPEAK_PORT", "5000"))
+    app.run(host=getenv("TWEETSPEAK_HOST","127.0.0.1"), port=int(getenv("TWEETSPEAK_PORT", "5000")))
