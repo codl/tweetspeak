@@ -2,39 +2,51 @@
 <head lang="en">
     <title>Dial-a-codl</title>
     <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@codl" />
-    <meta name="twitter:title" content="Dial-a-codl" />
-    <meta name="twitter:description" content="Hand picked codl tweets delivered straight to your ears" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@codl">
+    <meta name="twitter:title" content="Dial-a-codl">
+    <meta name="twitter:description" content="Handmade tweets delivered straight to your ears">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {
     font-family: sans-serif;
     font-size: 1.2em;
     max-width: 500px;
-    margin: 4em auto;
+    margin: 2em auto;
     text-align: center;
 }
 .numbers {
     list-style: none;
-    margin: 3em auto;
+    margin: 4em auto;
     padding: 0;
+    line-height: 1.3em;
 }
 a {
     text-decoration: none;
-    background: #a24;
-    color: white;
+    color: #a24;
+}
+footer {
+    margin: 4em auto;
+    font-size: 0.7em;
 }
 </style>
 </head>
 <body>
-    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">now open for business!<br>DIAL-A-CODL: CALL +33 973722635 AND GET YOUR VERY OWN CODL TWEET. dont forget to hit star to &quot;fav&quot; <a href="https://t.co/sRMMaZEafB">pic.twitter.com/sRMMaZEafB</a></p>&mdash; codl (@codl) <a href="https://twitter.com/codl/status/778317488148938752">September 20, 2016</a></blockquote>
+    <h1>Dial-a-codl</h1>
+    <p>Handmade tweets delivered straight to your ears</p>
     <ul class="numbers">
         {% for number in numbers %}
             <li>
-                {{ number.country }}:
+                📞 {{ number.country }}:
                 <a href="tel:{{ number.number }}">{{ number.number }}</a>
             </li>
         {% endfor %}
     </ul>
+
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">now open for business!<br>DIAL-A-CODL: CALL +33 973722635 AND GET YOUR VERY OWN CODL TWEET. dont forget to hit star to &quot;fav&quot; <a href="https://t.co/sRMMaZEafB">pic.twitter.com/sRMMaZEafB</a></p>&mdash; codl (@codl) <a href="https://twitter.com/codl/status/778317488148938752">September 20, 2016</a></blockquote>
+    <footer>
+        <p><a href="https://github.com/codl/tweetspeak">Source code</a></p>
+        <p>Privacy policy: Your phone number is never kept in logs for more than a few minutes. If I could prevent Twilio from logging calls entirely I would.</p>
+    </footer>
 </body>
 
