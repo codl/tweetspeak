@@ -23,6 +23,7 @@ NUMBERS = [
 
 @app.route("/")
 def index():
+    beacon("/diala/visit")
     return render_template("index.html", numbers=NUMBERS)
 
 @app.route("/hook/", methods={"GET", "POST"})
@@ -75,8 +76,12 @@ def get_tweet():
     tweet = random.choice(tweets)
     return tweet
 
+rs = requests.Session()
 def beacon(url, **kwargs):
-    requests.post("https://beacon.codl.fr%s" % (url,), json = kwargs)
+    try:
+        rs.post("https://beacon.codl.fr%s" % (url,), json = kwargs)
+    except Exception:
+        pass
 
 
 tw = None
