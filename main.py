@@ -25,18 +25,18 @@ def index():
     return render_template("index.html", numbers=NUMBERS)
 
 @app.route("/hook/", methods={"GET", "POST"})
-def twilio_resp():
-    if request.method == "GET":
-        r = twiml.Response()
-        r.say(get_tweet())
-        r.gather(numDigits=1, timeout=5)
-        return r.toxml(), {"Content-Type": "text/xml"}
-    elif request.method == "POST":
-        r = twiml.Response()
-        print(request.values.get("Digits"))
-        if('*' in request.values.get('Digits', '')):
-            r.say("thanks!")
-        return r.toxml(), {"Content-Type": "text/xml"}
+def twilio_resp_hook():
+    r = twiml.Response()
+    r.say(get_tweet())
+    r.gather(numDigits=1, timeout=5, action="/fave/")
+    return r.toxml(), {"Content-Type": "text/xml"}
+
+@app.route("/fave/", methods={"POST"})
+def twilio_resp_fave():
+    r = twiml.Response()
+    if('*' in request.values.get('Digits', '')):
+        r.say("thanks!")
+    return r.toxml(), {"Content-Type": "text/xml"}
 
 tweets=[]
 tweets_timestamp=0
