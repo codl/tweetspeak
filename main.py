@@ -26,7 +26,7 @@ def index():
     beacon("/diala/visit")
     return render_template("index.html", numbers=NUMBERS)
 
-@app.route("/hook/", methods={"GET", "POST"})
+@app.route("/hook/", methods={"POST"})
 def twilio_resp_hook():
     tweet = get_tweet()
     beacon("/diala/call",
@@ -38,9 +38,8 @@ def twilio_resp_hook():
     r.gather(numDigits=1, timeout=5, action="/fave/%s" % (tweet['id_str'],))
     return r.toxml(), {"Content-Type": "text/xml"}
 
-@app.route("/fave/", methods={"POST"})
 @app.route("/fave/<id>", methods={"POST"})
-def twilio_resp_fave(id=None):
+def twilio_resp_fave(id):
     beacon("/diala/fave",
             tweet=id,
             number=request.values.get("To"),
