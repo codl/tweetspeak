@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, make_response
+from flask import Flask, request, send_file, make_response, render_template
 from os import getenv
 from twilio import twiml
 import twitter
@@ -14,9 +14,14 @@ API_SECRET = getenv("TWEETSPEAK_API_SECRET")
 ACCESS_TOKEN = getenv("TWEETSPEAK_ACCESS_TOKEN")
 ACCESS_SECRET = getenv("TWEETSPEAK_ACCESS_SECRET")
 
+NUMBERS = [
+        {"country": "FR", "number": "+33 9 73 72 26 35"},
+        {"country": "UK", "number": "+44 20 3872 2635"}
+]
+
 @app.route("/")
 def index():
-    return "get out"
+    return render_template("index.html", numbers=NUMBERS)
 
 @app.route("/hook/", methods={"GET", "POST"})
 def twilio_resp():
