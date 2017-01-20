@@ -5,6 +5,7 @@ import twitter
 import time
 import random
 import string
+import requests
 
 app = Flask("tweetspeak")
 
@@ -26,13 +27,23 @@ def index():
 
 @app.route("/hook/", methods={"GET", "POST"})
 def twilio_resp_hook():
+    tweet = get_tweet()
+    beacon("/diala/call",
+            tweet=tweet['id_str'],
+            number=request.values.get("To"),
+            from_country=request.values.get("FromCountry"))
     r = twiml.Response()
-    r.say(get_tweet())
-    r.gather(numDigits=1, timeout=5, action="/fave/")
+    r.say(tweet['text'])
+    r.gather(numDigits=1, timeout=5, action="/fave/%s" % (tweet['id_str'],))
     return r.toxml(), {"Content-Type": "text/xml"}
 
 @app.route("/fave/", methods={"POST"})
-def twilio_resp_fave():
+@app.route("/fave/<id>", methods={"POST"})
+def twilio_resp_fave(id=None):
+    beacon("/diala/fave",
+            tweet=id,
+            number=request.values.get("To"),
+            from_country=request.values.get("FromCountry"))
     r = twiml.Response()
     if('*' in request.values.get('Digits', '')):
         r.say("thanks!")
@@ -62,7 +73,11 @@ def get_tweet():
         tweets = tweets[:40]
         tweets_timestamp = now
     tweet = random.choice(tweets)
-    return tweet['text']
+    return tweet
+
+def beacon(url, **kwargs):
+    requests.post("https://beacon.codl.fr%s" % (url,), json = kwargs)
+
 
 tw = None
 
