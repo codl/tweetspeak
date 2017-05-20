@@ -15,11 +15,7 @@ API_SECRET = getenv("TWEETSPEAK_API_SECRET")
 ACCESS_TOKEN = getenv("TWEETSPEAK_ACCESS_TOKEN")
 ACCESS_SECRET = getenv("TWEETSPEAK_ACCESS_SECRET")
 
-NUMBERS = [
-        {"country": "FR", "number": "+33 9 73 72 26 35"},
-        {"country": "UK", "number": "+44 20 3872 2635"},
-        {"country": "US", "number": "+1 (267) 930-2635"},
-]
+NUMBERS = [ ]
 
 @app.route("/")
 def index():

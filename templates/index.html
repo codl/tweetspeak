@@ -30,11 +30,23 @@ footer {
     margin: 4em auto;
     font-size: 0.7em;
 }
+.shutdown {
+    padding: 4rem 0;
+}
+kbd {
+    display: inline-block;
+    border: 1px solid #ddd;
+    background: #f1eeee;
+    padding: 3px;
+    margin: 3px;
+    font-family: monospace;
+}
 </style>
 </head>
 <body>
     <h1>Dial-a-codl</h1>
     <p>Handmade tweets delivered straight to your ears</p>
+    {% if numbers %}
     <ul class="numbers">
         {% for number in numbers %}
             <li>
@@ -43,6 +55,14 @@ footer {
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+    <section class="shutdown">
+        <h2>Shutdown notice</h2>
+        <p>Dial-a-codl is now retired, as of 2017-05-20, because I don't feel like spending any more money on a joke I made eight months ago.</p>
+        <p>Thanks for all your calls.</p>
+        <p>If you yearn to experience Dial-a-codl as it once was, you can always point your own Twilio number at <kbd>POST https://diala.codl.fr/hook</kbd></p>
+    </section>
+    {% endif %}
 
     <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">im gonna make a thing where you can call a twilio number and it just speaks out one of my tweets at random and you can press * to fave</p>&mdash; codl (@codl) <a href="https://twitter.com/codl/status/778271830280957952">September 20, 2016</a></blockquote>
     <blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">now open for business!<br>DIAL-A-CODL: CALL +33 973722635 AND GET YOUR VERY OWN CODL TWEET. dont forget to hit star to &quot;fav&quot; <a href="https://t.co/sRMMaZEafB">pic.twitter.com/sRMMaZEafB</a></p>&mdash; codl (@codl) <a href="https://twitter.com/codl/status/778317488148938752">September 20, 2016</a></blockquote>
